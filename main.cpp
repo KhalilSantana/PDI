@@ -44,6 +44,27 @@ Mat weighted_grayscale(Mat img) {
 	return outputImg;
 }
 
+Mat threshold(Mat img, uchar luminance) {
+	cv::Size size = img.size();
+	int width = size.width;
+	int height = size.height;
+	Mat outputImg(width, height, CV_8UC1, Scalar(0));
+	for (int w=0; w<width; w++) {
+		for (int h=0; h<height; h++) {
+		   // Read inputImg pixel at (w, h)
+		   uchar px = img.at<uchar>(w, h);
+		   if (px < luminance) {
+			   px = 0;
+		   } else {
+			   px = 255;
+		   }
+		   // Write value to outputImg
+		   outputImg.at<uchar>(Point(w, h)) = px;
+		}
+	}
+	return outputImg;
+}
+
 int main(int argc, char** argv ) {
     if ( argc != 2 )
     {
@@ -59,9 +80,9 @@ int main(int argc, char** argv ) {
     }
     const int channels = image.channels();
     printf("Number of channels = %d\n", channels);
-    Mat arith_gray = weighted_grayscale(image);
+    Mat output = threshold(arithmetic_grayscale(image), 190);
     namedWindow("Display Image", WINDOW_AUTOSIZE );
-    imshow("Display Image", arith_gray);
+    imshow("Display Image", output);
     waitKey(0);
     return 0;
 }
