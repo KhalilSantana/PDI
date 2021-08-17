@@ -65,6 +65,90 @@ Mat threshold(Mat img, uchar luminance) {
 	return outputImg;
 }
 
+Mat sub(Mat img_lhs, Mat img_rhs) {
+        cv::Size size = img_lhs.size();
+        int width = size.width;
+        int height = size.height;
+        Mat outputImg(width, height, CV_8UC3, Scalar(0, 0, 0));
+        for (int w=0; w<width; w++) {
+                for (int h=0; h<height; h++) {
+                   // Read inputImg pixel at (w, h)
+                   Vec3b px_lhs = img_lhs.at<Vec3b>(w, h);
+                   Vec3b px_rhs = img_rhs.at<Vec3b>(w, h);
+                   Vec3b px;
+		   for (int i=0; i<3; i++) {
+			   px[i] = px_lhs[i] - px_rhs[i];
+		   }
+                  // Write value to outputImg
+                   outputImg.at<Vec3b>(Point(w, h)) = px;
+                }
+        }
+        return outputImg;
+}
+
+Mat add(Mat img_lhs, Mat img_rhs) {
+        cv::Size size = img_lhs.size();
+        int width = size.width;
+        int height = size.height;
+        Mat outputImg(width, height, CV_8UC3, Scalar(0, 0, 0));
+        for (int w=0; w<width; w++) {
+                for (int h=0; h<height; h++) {
+                   // Read inputImg pixel at (w, h)
+                   Vec3b px_lhs = img_lhs.at<Vec3b>(w, h);
+                   Vec3b px_rhs = img_rhs.at<Vec3b>(w, h);
+                   Vec3b px;
+		   for (int i=0; i<3; i++) {
+			   px[i] = px_lhs[i] + px_rhs[i];
+		   }
+                  // Write value to outputImg
+                   outputImg.at<Vec3b>(Point(w, h)) = px;
+                }
+        }
+        return outputImg;
+}
+
+Mat div(Mat img_lhs, Mat img_rhs) {
+        cv::Size size = img_lhs.size();
+        int width = size.width;
+        int height = size.height;
+        Mat outputImg(width, height, CV_8UC3, Scalar(0, 0, 0));
+        for (int w=0; w<width; w++) {
+                for (int h=0; h<height; h++) {
+                   // Read inputImg pixel at (w, h)
+                   Vec3b px_lhs = img_lhs.at<Vec3b>(w, h);
+                   Vec3b px_rhs = img_rhs.at<Vec3b>(w, h);
+                   Vec3b px;
+		   for (int i=0; i<3; i++) {
+			   px[i] = px_lhs[i] / px_rhs[i];
+		   }
+                  // Write value to outputImg
+                   outputImg.at<Vec3b>(Point(w, h)) = px;
+                }
+        }
+        return outputImg;
+}
+
+Mat mul(Mat img_lhs, Mat img_rhs) {
+        cv::Size size = img_lhs.size();
+        int width = size.width;
+        int height = size.height;
+        Mat outputImg(width, height, CV_8UC3, Scalar(0, 0, 0));
+        for (int w=0; w<width; w++) {
+                for (int h=0; h<height; h++) {
+                   // Read inputImg pixel at (w, h)
+                   Vec3b px_lhs = img_lhs.at<Vec3b>(w, h);
+                   Vec3b px_rhs = img_rhs.at<Vec3b>(w, h);
+                   Vec3b px;
+		   for (int i=0; i<3; i++) {
+			   px[i] = px_lhs[i] * px_rhs[i];
+		   }
+                  // Write value to outputImg
+                   outputImg.at<Vec3b>(Point(w, h)) = px;
+                }
+        }
+        return outputImg;
+}
+
 int main(int argc, char** argv ) {
     if ( argc != 2 )
     {
@@ -80,7 +164,7 @@ int main(int argc, char** argv ) {
     }
     const int channels = image.channels();
     printf("Number of channels = %d\n", channels);
-    Mat output = threshold(arithmetic_grayscale(image), 190);
+    Mat output = sub(image, image);
     namedWindow("Display Image", WINDOW_AUTOSIZE );
     imshow("Display Image", output);
     waitKey(0);
