@@ -14,7 +14,7 @@ Mat arithmetic_grayscale(Mat img) {
 	for (int w=0; w<width; w++) {
 		for (int h=0; h<height; h++) {
 		   // Read inputImg pixel at (w, h)
-		   Vec3b rgb = img.at<Vec3b>(w, h);
+		   Vec3b rgb = img.at<Vec3b>(h, w);
 		   // Arithmetic gray
 		   int gray = (rgb[0] + rgb[1] + rgb[2])/3;
 		   // Write value to outputImg
@@ -38,7 +38,7 @@ Mat weighted_grayscale(Mat img) {
 		   gray += (float)rgb[1] * GRAYSCALE_GREEN_FACTOR;
 		   gray += (float)rgb[2] * GRAYSCALE_BLUE_FACTOR;
 		   // Write value to outputImg
-		   outputImg.at<uchar>(Point(w, h)) = gray;
+		   outputImg.at<uchar>(Point(h, w)) = gray;
 		}
 	}
 	return outputImg;
@@ -59,7 +59,7 @@ Mat threshold(Mat img, uchar luminance) {
 			   px = 255;
 		   }
 		   // Write value to outputImg
-		   outputImg.at<uchar>(Point(w, h)) = px;
+		   outputImg.at<uchar>(Point(h, w)) = px;
 		}
 	}
 	return outputImg;
@@ -80,7 +80,7 @@ Mat sub(Mat img_lhs, Mat img_rhs) {
 			   px[i] = px_lhs[i] - px_rhs[i];
 		   }
                   // Write value to outputImg
-                   outputImg.at<Vec3b>(Point(w, h)) = px;
+                   outputImg.at<Vec3b>(Point(h, w)) = px;
                 }
         }
         return outputImg;
@@ -101,7 +101,7 @@ Mat add(Mat img_lhs, Mat img_rhs) {
 			   px[i] = px_lhs[i] + px_rhs[i];
 		   }
                   // Write value to outputImg
-                   outputImg.at<Vec3b>(Point(w, h)) = px;
+                   outputImg.at<Vec3b>(Point(h, w)) = px;
                 }
         }
         return outputImg;
@@ -122,7 +122,7 @@ Mat div(Mat img_lhs, Mat img_rhs) {
 			   px[i] = px_lhs[i] / px_rhs[i];
 		   }
                   // Write value to outputImg
-                   outputImg.at<Vec3b>(Point(w, h)) = px;
+                   outputImg.at<Vec3b>(Point(h, w)) = px;
                 }
         }
         return outputImg;
@@ -143,7 +143,7 @@ Mat mul(Mat img_lhs, Mat img_rhs) {
 			   px[i] = px_lhs[i] * px_rhs[i];
 		   }
                   // Write value to outputImg
-                   outputImg.at<Vec3b>(Point(w, h)) = px;
+                   outputImg.at<Vec3b>(Point(h, w)) = px;
                 }
         }
         return outputImg;
@@ -164,7 +164,7 @@ int main(int argc, char** argv ) {
     }
     const int channels = image.channels();
     printf("Number of channels = %d\n", channels);
-    Mat output = sub(image, image);
+    Mat output = sub(image, threshold(arithmetic_grayscale(image, 200)));
     namedWindow("Display Image", WINDOW_AUTOSIZE );
     imshow("Display Image", output);
     waitKey(0);
