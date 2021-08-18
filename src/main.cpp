@@ -1,4 +1,5 @@
 #include "image_arithmatic.hpp"
+#include "basic_operations.hpp"
 #include <opencv4/opencv2/opencv.hpp>
 #include <stdio.h>
 
