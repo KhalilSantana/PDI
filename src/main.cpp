@@ -9,15 +9,16 @@ int main(int argc, char **argv) {
         printf("usage: DisplayImage.out <Image_Path>\n");
         return -1;
     }
-    Mat image;
+    Mat image, image2;
     image = imread(argv[1], 1);
-    if (!image.data) {
+    image2 = imread(argv[2], 1);
+    if (!image.data || !image2.data) {
         printf("No image data \n");
         return -1;
     }
     const int channels = image.channels();
     printf("Number of channels = %d\n", channels);
-    Mat output = sub(image, threshold(arithmetic_grayscale(image), 200));
+    Mat output = sub(image, image2);
     namedWindow("Display Image", WINDOW_AUTOSIZE);
     imshow("Display Image", output);
     waitKey(0);

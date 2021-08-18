@@ -1,6 +1,7 @@
 #include "constants.hpp"
 #include <opencv4/opencv2/opencv.hpp>
-
+#include <boost/safe_numerics/checked_result.hpp>
+#include <boost/safe_numerics/checked_result_operations.hpp>
 // Create grayscale image using an arithmetic average
 cv::Mat arithmetic_grayscale(cv::Mat img);
 

@@ -81,6 +81,7 @@ cv::Mat add(cv::Mat img_lhs, cv::Mat img_rhs) {
 }
 
 cv::Mat sub(cv::Mat img_lhs, cv::Mat img_rhs) {
+    using checked_int = boost::safe_numerics::checked_result<int>;
     cv::Size size = img_lhs.size();
     int width = size.width;
     int height = size.height;
@@ -92,7 +93,12 @@ cv::Mat sub(cv::Mat img_lhs, cv::Mat img_rhs) {
             cv::Vec3b px_rhs = img_rhs.at<cv::Vec3b>(w, h);
             cv::Vec3b px;
             for (int i = 0; i < 3; i++) {
-                px[i] = px_lhs[i] - px_rhs[i];
+                try {
+                    checked_int px_val = px_lhs[i] - px_rhs[i];
+                    px[i] = px_val;
+                } catch (const std::logic_error &e) {
+                    px[i] = 0;
+                }
             }
             // Write value to outputImg
             outputImg.at<cv::Vec3b>(h, w) = px;
