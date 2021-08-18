@@ -5,8 +5,8 @@
 using namespace cv;
 
 int main(int argc, char **argv) {
-    if (argc != 2) {
-        printf("usage: DisplayImage.out <Image_Path>\n");
+    if (argc != 3) {
+        printf("usage: %s <Image_Path>\n", argv[0]);
         return -1;
     }
     Mat image, image2;
