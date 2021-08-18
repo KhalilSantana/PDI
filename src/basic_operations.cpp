@@ -58,3 +58,17 @@ cv::Mat threshold(cv::Mat img, uchar luminance) {
     }
     return outputImg;
 }
+
+// NOTE: OpenCV uses BGR by default, so channel=0 is BLUE
+cv::Mat isolate_channel(cv::Mat img, int channel) {
+    cv::Mat outputImg(img.cols, img.rows, CV_8UC3, cv::Scalar(0, 0, 0));   
+    for (int h = 0; h < img.rows; h++) {
+        for (int w = 0; w < img.cols; w++) {
+            // Read inputImg pixel at (w, h)
+            cv::Vec3b px = cv::Vec3b(0, 0, 0);
+            px[channel] = img.at<cv::Vec3b>(w, h)[channel];
+            outputImg.at<cv::Vec3b>(w, h) = px;
+        }
+    }
+    return outputImg;
+}
