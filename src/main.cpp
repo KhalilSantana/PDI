@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
     }
     const int channels = image.channels();
     printf("Number of channels = %d\n", channels);
-    Mat output = sub(image, image2);
+    Mat output = add(image2, image);
     namedWindow("Display Image", WINDOW_AUTOSIZE);
     imshow("Display Image", output);
     waitKey(0);
