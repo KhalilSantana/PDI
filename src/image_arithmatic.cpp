@@ -53,8 +53,8 @@ cv::Mat mul(cv::Mat img_lhs, cv::Mat img_rhs) {
     for (int h = 0; h < img_lhs.rows; h++) {
         for (int w = 0; w < img_lhs.cols; w++) {
             // Read inputImg pixel at (h, w)
-            cv::Vec3b px_lhs = img_lhs.at<cv::Vec3b>(w, h);
-            cv::Vec3b px_rhs = img_rhs.at<cv::Vec3b>(w, h);
+            cv::Vec3b px_lhs = img_lhs.at<cv::Vec3b>(h, w);
+            cv::Vec3b px_rhs = img_rhs.at<cv::Vec3b>(h, w);
             cv::Vec3b px;
             for (int i = 0; i < 3; i++) {
                 int px_val = px_lhs[i] * px_rhs[i];
@@ -77,8 +77,8 @@ cv::Mat div(cv::Mat img_lhs, cv::Mat img_rhs) {
     for (int h = 0; h < img_lhs.rows; h++) {
         for (int w = 0; w < img_lhs.cols; w++) {
             // Read inputImg pixel at (h, w)
-            cv::Vec3b px_lhs = img_lhs.at<cv::Vec3b>(w, h);
-            cv::Vec3b px_rhs = img_rhs.at<cv::Vec3b>(w, h);
+            cv::Vec3b px_lhs = img_lhs.at<cv::Vec3b>(h, w);
+            cv::Vec3b px_rhs = img_rhs.at<cv::Vec3b>(h, w);
             cv::Vec3b px;
             for (int i = 0; i < 3; i++) {
 		        if (px_rhs[i] == 0) { px[i] = 255; continue;}
