@@ -28,9 +28,10 @@ cv::Mat weighted_grayscale(cv::Mat img) {
             // Read inputImg pixel at (w, h)
             cv::Vec3b rgb = img.at<cv::Vec3b>(w, h);
             // Weighted airthmetic gray
-            int gray = (float)rgb[0] * GRAYSCALE_RED_FACTOR;
+            // NOTE: OpenCV uses BGR by default, so channel=0 is BLUE
+            int gray = (float)rgb[2] * GRAYSCALE_RED_FACTOR;
             gray += (float)rgb[1] * GRAYSCALE_GREEN_FACTOR;
-            gray += (float)rgb[2] * GRAYSCALE_BLUE_FACTOR;
+            gray += (float)rgb[0] * GRAYSCALE_BLUE_FACTOR;
             // Write value to outputImg
             outputImg.at<uchar>(h, w) = gray;
         }
