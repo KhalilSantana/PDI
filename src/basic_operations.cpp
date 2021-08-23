@@ -1,32 +1,26 @@
 #include "basic_operations.hpp"
 
 cv::Mat arithmetic_grayscale(cv::Mat img) {
-    cv::Size size = img.size();
-    int width = size.width;
-    int height = size.height;
-    cv::Mat outputImg(width, height, CV_8UC1, cv::Scalar(0));
-    for (int w = 0; w < width; w++) {
-        for (int h = 0; h < height; h++) {
+    cv::Mat outputImg(img.rows, img.cols, CV_8UC1, cv::Scalar(0));
+    for (int h = 0; h < img.rows; h++) {
+        for (int w = 0; w < img.cols; w++) {
             // Read inputImg pixel at (w, h)
             cv::Vec3b rgb = img.at<cv::Vec3b>(h, w);
             // Arithmetic gray
             int gray = (rgb[0] + rgb[1] + rgb[2]) / 3;
             // Write value to outputImg
-            outputImg.at<uchar>(w, h) = gray;
+            outputImg.at<uchar>(h, w) = gray;
         }
     }
     return outputImg;
 }
 
 cv::Mat weighted_grayscale(cv::Mat img) {
-    cv::Size size = img.size();
-    int width = size.width;
-    int height = size.height;
-    cv::Mat outputImg(width, height, CV_8UC1, cv::Scalar(0));
-    for (int w = 0; w < width; w++) {
-        for (int h = 0; h < height; h++) {
+    cv::Mat outputImg(img.rows, img.cols, CV_8UC1, cv::Scalar(0));
+    for (int h = 0; h < img.rows; h++) {
+        for (int w = 0; w < img.cols; w++) {
             // Read inputImg pixel at (w, h)
-            cv::Vec3b rgb = img.at<cv::Vec3b>(w, h);
+            cv::Vec3b rgb = img.at<cv::Vec3b>(h, w);
             // Weighted airthmetic gray
             // NOTE: OpenCV uses BGR by default, so channel=0 is BLUE
             int gray = (float)rgb[2] * GRAYSCALE_RED_FACTOR;
@@ -40,14 +34,11 @@ cv::Mat weighted_grayscale(cv::Mat img) {
 }
 
 cv::Mat threshold(cv::Mat img, uchar luminance) {
-    cv::Size size = img.size();
-    int width = size.width;
-    int height = size.height;
-    cv::Mat outputImg(width, height, CV_8UC1, cv::Scalar(0));
-    for (int w = 0; w < width; w++) {
-        for (int h = 0; h < height; h++) {
-            // Read inputImg pixel at (w, h)
-            uchar px = img.at<uchar>(w, h);
+    cv::Mat outputImg(img.rows, img.cols, CV_8UC1, cv::Scalar(0));
+    for (int h = 0; h < img.rows; h++) {
+        for (int w = 0; w < img.cols; w++) {
+            // Read inputImg pixel at (h, w)
+            uchar px = img.at<uchar>(h, w);
             if (px < luminance) {
                 px = 0;
             } else {
@@ -60,15 +51,15 @@ cv::Mat threshold(cv::Mat img, uchar luminance) {
     return outputImg;
 }
 
-// NOTE: OpenCV uses BGR by default, so channel=0 is BLUE
 cv::Mat isolate_channel(cv::Mat img, int channel) {
-    cv::Mat outputImg(img.cols, img.rows, CV_8UC3, cv::Scalar(0, 0, 0));   
+    cv::Mat outputImg(img.rows, img.cols, CV_8UC1, cv::Scalar(0));
     for (int h = 0; h < img.rows; h++) {
         for (int w = 0; w < img.cols; w++) {
-            // Read inputImg pixel at (w, h)
+            // Read inputImg pixel at (h, w)
             cv::Vec3b px = cv::Vec3b(0, 0, 0);
-            px[channel] = img.at<cv::Vec3b>(w, h)[channel];
-            outputImg.at<cv::Vec3b>(w, h) = px;
+            // NOTE: OpenCV uses BGR by default, so channel=0 is BLUE
+            px[channel] = img.at<cv::Vec3b>(h, w)[channel];
+            outputImg.at<cv::Vec3b>(h, w) = px;
         }
     }
     return outputImg;
