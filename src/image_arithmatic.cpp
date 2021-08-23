@@ -1,13 +1,10 @@
 #include "image_arithmatic.hpp"
 
 cv::Mat add(cv::Mat img_lhs, cv::Mat img_rhs) {
-    cv::Size size = img_lhs.size();
-    int width = size.width;
-    int height = size.height;
-    cv::Mat outputImg(width, height, CV_8UC3, cv::Scalar(0, 0, 0));
-    for (int w = 0; w < width; w++) {
-        for (int h = 0; h < height; h++) {
-            // Read inputImg pixel at (w, h)
+    cv::Mat outputImg(img_lhs.rows, img_lhs.cols, CV_8UC3, cv::Scalar(0, 0, 0));
+    for (int h = 0; h < img_lhs.rows; h++) {
+        for (int w = 0; w < img_lhs.cols; w++) {
+            // Read inputImg pixel at (h, w)
             cv::Vec3b px_lhs = img_lhs.at<cv::Vec3b>(h, w);
             cv::Vec3b px_rhs = img_rhs.at<cv::Vec3b>(h, w);
             cv::Vec3b px;
@@ -28,13 +25,10 @@ cv::Mat add(cv::Mat img_lhs, cv::Mat img_rhs) {
 }
 
 cv::Mat sub(cv::Mat img_lhs, cv::Mat img_rhs) {
-    cv::Size size = img_lhs.size();
-    int width = size.width;
-    int height = size.height;
-    cv::Mat outputImg(width, height, CV_8UC3, cv::Scalar(0, 0, 0));
-    for (int w = 0; w < width; w++) {
-        for (int h = 0; h < height; h++) {
-            // Read inputImg pixel at (w, h)
+    cv::Mat outputImg(img_lhs.rows, img_lhs.cols, CV_8UC3, cv::Scalar(0, 0, 0));
+    for (int h = 0; h < img_lhs.rows; h++) {
+        for (int w = 0; w < img_lhs.cols; w++) {
+            // Read inputImg pixel at (h, w)
             cv::Vec3b px_lhs = img_lhs.at<cv::Vec3b>(h, w);
             cv::Vec3b px_rhs = img_rhs.at<cv::Vec3b>(h, w);
             cv::Vec3b px;
@@ -55,13 +49,10 @@ cv::Mat sub(cv::Mat img_lhs, cv::Mat img_rhs) {
 }
 
 cv::Mat mul(cv::Mat img_lhs, cv::Mat img_rhs) {
-    cv::Size size = img_lhs.size();
-    int width = size.width;
-    int height = size.height;
-    cv::Mat outputImg(width, height, CV_8UC3, cv::Scalar(0, 0, 0));
-    for (int w = 0; w < width; w++) {
-        for (int h = 0; h < height; h++) {
-            // Read inputImg pixel at (w, h)
+    cv::Mat outputImg(img_lhs.rows, img_lhs.cols, CV_8UC3, cv::Scalar(0, 0, 0));
+    for (int h = 0; h < img_lhs.rows; h++) {
+        for (int w = 0; w < img_lhs.cols; w++) {
+            // Read inputImg pixel at (h, w)
             cv::Vec3b px_lhs = img_lhs.at<cv::Vec3b>(w, h);
             cv::Vec3b px_rhs = img_rhs.at<cv::Vec3b>(w, h);
             cv::Vec3b px;
@@ -82,13 +73,10 @@ cv::Mat mul(cv::Mat img_lhs, cv::Mat img_rhs) {
 }
 
 cv::Mat div(cv::Mat img_lhs, cv::Mat img_rhs) {
-    cv::Size size = img_lhs.size();
-    int width = size.width;
-    int height = size.height;
-    cv::Mat outputImg(width, height, CV_8UC3, cv::Scalar(0, 0, 0));
-    for (int w = 0; w < width; w++) {
-        for (int h = 0; h < height; h++) {
-            // Read inputImg pixel at (w, h)
+    cv::Mat outputImg(img_lhs.rows, img_lhs.cols, CV_8UC3, cv::Scalar(0, 0, 0));
+    for (int h = 0; h < img_lhs.rows; h++) {
+        for (int w = 0; w < img_lhs.cols; w++) {
+            // Read inputImg pixel at (h, w)
             cv::Vec3b px_lhs = img_lhs.at<cv::Vec3b>(w, h);
             cv::Vec3b px_rhs = img_rhs.at<cv::Vec3b>(w, h);
             cv::Vec3b px;
