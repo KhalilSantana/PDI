@@ -52,7 +52,7 @@ cv::Mat threshold(cv::Mat img, uchar luminance) {
 }
 
 cv::Mat isolate_channel(cv::Mat img, int channel) {
-    cv::Mat outputImg(img.rows, img.cols, CV_8UC1, cv::Scalar(0));
+    cv::Mat outputImg(img.rows, img.cols, CV_8UC3, cv::Scalar(0, 0, 0));
     for (int h = 0; h < img.rows; h++) {
         for (int w = 0; w < img.cols; w++) {
             // Read inputImg pixel at (h, w)
