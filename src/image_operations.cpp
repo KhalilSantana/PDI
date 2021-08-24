@@ -1,15 +1,12 @@
 #include "image_operations.hpp"
 
-cv::Mat convmatrix(cv::Mat img, float kernel[][3]) {
-    // printf("Convolving image with kernel\n");
-
+cv::Mat convolution(cv::Mat img, float kernel[][3]) {
     cv::Size size = img.size();
     int width = size.width;
     int height = size.height;
-    printf("%d, %d", width, height);
-    //result image
     cv::Mat result(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
     // kernel filters:
+    // TODO: move to constants maybe?
     float mask[3][3] = {
             {0 - 1, 0},
             {-1, 5, -1},
