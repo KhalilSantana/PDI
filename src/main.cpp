@@ -1,5 +1,6 @@
 #include "image_arithmatic.hpp"
 #include "basic_operations.hpp"
+#include "image_operations.hpp"
 #include <opencv4/opencv2/opencv.hpp>
 #include <stdio.h>
 
@@ -19,7 +20,10 @@ int main(int argc, char **argv) {
     }
     const int channels = image.channels();
     printf("Number of channels = %d\n", channels);
-    Mat output = threshold(weighted_grayscale(image),150);
+    // Mat output = threshold(weighted_grayscale(image),150);
+    //conv matrix with image and empty cv::Mat
+    float kernel[3][3];
+    Mat output = convmatrix(image, kernel);
     namedWindow("Display Image", WINDOW_AUTOSIZE);
     imshow("Display Image", output);
     waitKey(0);
