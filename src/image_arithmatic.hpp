@@ -9,3 +9,5 @@ cv::Mat sub(cv::Mat img_lhs, cv::Mat img_rhs);
 cv::Mat mul(cv::Mat img_lhs, cv::Mat img_rhs);
 
 cv::Mat div(cv::Mat img_lhs, cv::Mat img_rhs);
+
+cv::Mat subBin(cv::Mat img_lhs, cv::Mat img_rhs); // subtracts the binary image
