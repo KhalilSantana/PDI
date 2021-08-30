@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
     imwrite("output/sub.png", subImg);
     imwrite("output/mul.png", mulImg);
     imwrite("output/div.png", divImg);
-    // Basic operations
+    // // Basic operations
     Mat arithGrayImg = arithmetic_grayscale(image);
     Mat weightedGrayImg = weighted_grayscale(image);
     Mat threshImg = threshold(weightedGrayImg, 150);
