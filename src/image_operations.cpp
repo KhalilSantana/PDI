@@ -1,55 +1,100 @@
 #include "image_operations.hpp"
 
-cv::Mat convolution(cv::Mat img, float kernel[][3]) {
+cv::Mat convolution(cv::Mat img, float **kernel, int kernel_size) {
     cv::Size size = img.size();
     int width = size.width;
     int height = size.height;
-    cv::Mat result(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
-    // kernel filters:
-    // TODO: move to constants maybe?
-    float mask[3][3] = {
-            {0 - 1, 0},
-            {-1, 5, -1},
-            {0, -1, 0},
-        };
-    float bottomSobel[3][3] = {
-            {-1, -2, -1},
-            {0, 0, 0},
-            {1, 2, 1},
-    };
-    //set kernel filter
-    kernel = bottomSobel;
-
+    cv::Mat outputImg(height, width, CV_8UC1, cv::Scalar(0));
     // apply convolution matrix kernel in img
-    for (int c = 0; c < width; c++) { // for each column
+    for (int c = 0; c < width; c++) {      // for each column
         for (int r = 0; r < height; r++) { // for each row
-            cv::Vec3b px; // new result pixel.
-            for (int i = 0; i < 3; i++) { // for each channel
-                float px_val = 0; // new pixel_channel value
-                for (int j = 0; j < 3; j++) { // for each kernel row
-                    for (int k = 0; k < 3; k++) { // for each kernel column
-                        // get the pixel that need to be changed
-                        /* Representation of target image.
-                            (j-1, k-1), (j-1, k), (j-1, k+1)
-                            (j, k-1),   (j, k),   (j, k+1),
-                            (j+1, k-1), (j+1, k), (j+1, k+1)   
-                        */
-                        int posX = j-1 + c;
-                        int posY = k-1 + r;
-                        // check if the pixel is in the image
-                        posX<0 ? posX=0 : posX>=width ? posX=width-1 : posX;
-                        posY<0 ? posY=0 : posY>=height ? posY=height-1 : posY;
-                        // get the pixel value 
-                        px_val += img.at<cv::Vec3b>(posY, posX)[i] * kernel[j][k];
-                    }
+            uchar px = 0;                      // new outputImg pixel.
+            int kernel_center = kernel_size / 2;
+            for (int j = -kernel_center; j < kernel_size - 1;
+                 j++) { // for each kernel row
+                for (int k = -kernel_center; k < kernel_size - 1;
+                     k++) { // for each kernel column
+                    // get the pixel that need to be changed
+                    /* Representation of target image with a 3x3 kernel.
+                        (c-1, r-1), (c-1, r), (c-1, r+1),
+                        (c, r-1),   (c, r),     (c, r+1),
+                        (c+1, r-1), (c+1, r), (c+1, r+1),
+                    */
+                    int posX = c + j;
+                    int posY = r + k;
+                    // check if the pixel is in the image
+                    posX < 0        ? posX = 0
+                    : posX >= width ? posX = width - 1
+                                    : posX;
+                    posY < 0         ? posY = 0
+                    : posY >= height ? posY = height - 1
+                                     : posY;
+                    // get the pixel value
+                    px += img.at<uchar>(posY, posX) *
+                              kernel[j + kernel_center][k + kernel_center];
                 }
-                //threshold the pixel value
-                px_val<0 ? px_val=0 : px_val>255 ? px_val=255 : px_val;
-                px[i] = px_val;
             }
-            // Write value to result image
-            result.at<cv::Vec3b>(r, c) = px;
+            // Write value to outputImg image
+            outputImg.at<uchar>(r, c) = px<0 ? px = 0 : px> 255 ? px = 255 : px;
         }
     }
-    return result;
+    return outputImg;
 }
+
+cv::Mat erosion(cv::Mat img, float **kernel, int kernel_size) {
+    cv::Size size = img.size();
+    int width = size.width;
+    int height = size.height;
+    int kernel_center = kernel_size / 2;
+    cv::Mat outputImg(height, width, CV_8UC1, cv::Scalar(0));
+    for (int c = kernel_center; c < width-kernel_center; c++) {      // for each column
+        for (int r = kernel_center; r < height-kernel_center; r++) { // for each row
+            uchar px = 1;                      // new outputImg pixel.
+            for (int j = -kernel_center; j < kernel_size - 1; j++) { // for each kernel row
+                for (int k = -kernel_center; k < kernel_size - 1; k++) { // for each kernel column
+                    float kernel_cell =
+                        kernel[j + kernel_center][k + kernel_center];
+                    int posX = c + j;
+                    int posY = r + k;
+                    if (kernel_cell == 0)
+                        continue;
+                    if ((img.at<uchar>(posY, posX) == 0)) {
+                        px = 0;
+                        break;
+                    }
+                }
+            }
+            // Write value to outputImg image
+            outputImg.at<uchar>(r, c) = px == 0 ? 0 : 255;
+        }
+    }
+    return outputImg;
+}
+
+cv::Mat dilatation(cv::Mat img, float **kernel, int kernel_size) {
+    cv::Size size = img.size();
+    int width = size.width;
+    int height = size.height;
+    int kernel_center = kernel_size / 2;
+    cv::Mat outputImg(height, width, CV_8UC1, cv::Scalar(0));
+    for (int c = kernel_center; c < width-kernel_center; c++) {      // for each column
+        for (int r = kernel_center; r < height-kernel_center; r++) { // for each row
+            uchar px = 1;                      // new outputImg pixel.
+            if(img.at<uchar>(r, c) == 0 || kernel[kernel_center][kernel_center] == 0)continue;
+            for (int j = -kernel_center; j < kernel_size - 1; j++) { // for each kernel row
+                for (int k = -kernel_center; k < kernel_size - 1; k++) { // for each kernel column
+                    float kernel_cell = kernel[j + kernel_center][k + kernel_center];
+                    if(kernel_cell==0) continue;
+                    int posX = c + j;
+                    int posY = r + k;
+                    // check if the pixel is in the image
+                    outputImg.at<uchar>(posY, posX) = 255;
+                }
+            }
+        }
+    }
+    return outputImg;
+}
+
+
+
