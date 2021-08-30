@@ -3,6 +3,7 @@
 #include "image_operations.hpp"
 #include <opencv4/opencv2/opencv.hpp>
 #include <stdio.h>
+#include "effects.hpp"
 
 using namespace cv;
 
@@ -12,8 +13,8 @@ int main(int argc, char **argv) {
     //     return -1;
     // }
     Mat image, image2;
-    image = imread(argv[1] ? argv[1] : "ubuntu.png", 1);
-    image2 = imread(argv[2] ? argv[2] :"ubuntu.png", 1);
+    image = imread(argv[1], 1);
+    image2 = imread(argv[2], 1);
     if (!image.data) {
         printf("No image data \n");
         return -1;
@@ -41,58 +42,42 @@ int main(int argc, char **argv) {
     imwrite("output/green-channel.png", greenImg);
     imwrite("output/blue-channel.png", blueImg);
 
-    float sharpen[3][3] = {
-        {0 - 1, 0},
-        {-1, 5, -1},
-        {0, -1, 0},
-    };
-    float bottomSobel[3][3] = {
-        {-1, -2, -1},
-        {0, 0, 0},
-        {1, 2, 1},
-    };
-    float blur[3][3] = {
-        {0.0625, 0.125, 0.0625},
-        {0.125, 0.25, 0.125},
-        {0.0625, 0.125, 0.0625}
-    };
-    float mfe[3][3] = {
-        {0, 1, 0},
-        {1, 1, 1},
-        {0, 1, 0}
-    };
-    float mfd[3][3] = {
-        {0, 1, 0},
-        {1, 1, 1},
-        {0, 1, 0}
-    };
-
        const int size = 3;
     float *kernel[size];
  
-    for(int i = 0; i <size; i++)
+    for(int i = 0; i <size; i++) //setting up the kernel
         kernel[i] = bottomSobel[i];
-
-    Mat convolutedImg = convolution(threshImg, kernel, size);
+    Mat convolutedImg = convolution(weightedGrayImg, kernel, size);
     imwrite("output/convolution.png", convolutedImg);
      
-    for(int i = 0; i <size; i++)
+    for(int i = 0; i <size; i++) //setting up the kernel
         kernel[i] = mfe[i];
-
     Mat erodedImg = erosion(threshImg, kernel, size);
     imwrite("output/Erosion.png", erodedImg);
      
-    for(int i = 0; i <size; i++)
+    for(int i = 0; i <size; i++) //setting up the kernel
         kernel[i] = mfd[i];
-
     Mat dilatedImg = dilatation(threshImg, kernel, size);
     imwrite("output/Dilation.png", dilatedImg);
 
     Mat boundExt = subBin(dilatedImg, threshImg);
     imwrite("output/boundary-extraction.png", boundExt);
+
     Mat boundInt = subBin(threshImg, erodedImg);
     imwrite("output/boundary-intraction.png", boundInt);
-    Mat opening = dilatation()
+
+    //Opening
+    for(int i = 0; i <size; i++) //setting up the kernel
+        kernel[i] = mfe[i];
+    Mat opening = dilatation(erosion(threshImg, kernel, size), kernel, size);
+    imwrite("output/opening.png", opening);
+
+    //Closing
+    for(int i = 0; i <size; i++) //setting up the kernel
+        kernel[i] = mfe[i];
+    Mat closing = erosion(dilatation(threshImg, kernel, size), kernel, size);
+    imwrite("output/closing.png", closing);
+
     // namedWindow("Display Image", WINDOW_AUTOSIZE);
     // imshow("Display Image", output);
     // waitKey(0);
