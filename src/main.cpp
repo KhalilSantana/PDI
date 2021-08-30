@@ -1,9 +1,9 @@
-#include "image_arithmatic.hpp"
-#include "basic_operations.hpp"
-#include "image_operations.hpp"
+#include "include/image_arithmatic.hpp"
+#include "include/basic_operations.hpp"
+#include "include/image_operations.hpp"
 #include <opencv4/opencv2/opencv.hpp>
 #include <stdio.h>
-#include "effects.hpp"
+#include "include/effects.hpp"
 
 using namespace cv;
 

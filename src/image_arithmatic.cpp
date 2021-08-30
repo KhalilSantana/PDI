@@ -1,4 +1,4 @@
-#include "image_arithmatic.hpp"
+#include "include/image_arithmatic.hpp"
 
 cv::Mat add(cv::Mat img_lhs, cv::Mat img_rhs) {
     cv::Mat outputImg(img_lhs.rows, img_lhs.cols, CV_8UC3, cv::Scalar(0, 0, 0));

@@ -1,4 +1,4 @@
-#include "image_operations.hpp"
+#include "include/image_operations.hpp"
 
 cv::Mat convolution(cv::Mat img, float **kernel, int kernel_size) {
     int kernel_center = kernel_size / 2;

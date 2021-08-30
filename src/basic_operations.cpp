@@ -1,4 +1,4 @@
-#include "basic_operations.hpp"
+#include "include/basic_operations.hpp"
 
 cv::Mat arithmetic_grayscale(cv::Mat img) {
     cv::Mat outputImg(img.rows, img.cols, CV_8UC1, cv::Scalar(0));
