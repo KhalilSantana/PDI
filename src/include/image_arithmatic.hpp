@@ -1,6 +1,6 @@
-#include <opencv4/opencv2/opencv.hpp>
 #include <boost/safe_numerics/checked_result.hpp>
 #include <boost/safe_numerics/checked_result_operations.hpp>
+#include <opencv4/opencv2/opencv.hpp>
 
 cv::Mat add(cv::Mat img_lhs, cv::Mat img_rhs);
 

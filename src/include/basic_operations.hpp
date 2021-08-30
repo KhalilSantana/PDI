@@ -1,5 +1,5 @@
-#include <opencv4/opencv2/opencv.hpp>
 #include "constants.hpp"
+#include <opencv4/opencv2/opencv.hpp>
 
 cv::Mat arithmetic_grayscale(cv::Mat img);
 

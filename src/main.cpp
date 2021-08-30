@@ -1,9 +1,9 @@
-#include "include/image_arithmatic.hpp"
 #include "include/basic_operations.hpp"
+#include "include/effects.hpp"
+#include "include/image_arithmatic.hpp"
 #include "include/image_operations.hpp"
 #include <opencv4/opencv2/opencv.hpp>
 #include <stdio.h>
-#include "include/effects.hpp"
 
 using namespace cv;
 
@@ -42,20 +42,20 @@ int main(int argc, char **argv) {
     imwrite("output/green-channel.png", greenImg);
     imwrite("output/blue-channel.png", blueImg);
 
-       const int size = 3;
+    const int size = 3;
     float *kernel[size];
- 
-    for(int i = 0; i <size; i++) //setting up the kernel
+
+    for (int i = 0; i < size; i++) // setting up the kernel
         kernel[i] = bottomSobel[i];
     Mat convolutedImg = convolution(weightedGrayImg, kernel, size);
     imwrite("output/convolution.png", convolutedImg);
-     
-    for(int i = 0; i <size; i++) //setting up the kernel
+
+    for (int i = 0; i < size; i++) // setting up the kernel
         kernel[i] = mfe[i];
     Mat erodedImg = erosion(threshImg, kernel, size);
     imwrite("output/Erosion.png", erodedImg);
-     
-    for(int i = 0; i <size; i++) //setting up the kernel
+
+    for (int i = 0; i < size; i++) // setting up the kernel
         kernel[i] = mfd[i];
     Mat dilatedImg = dilatation(threshImg, kernel, size);
     imwrite("output/Dilation.png", dilatedImg);
@@ -66,14 +66,14 @@ int main(int argc, char **argv) {
     Mat boundInt = subBin(threshImg, erodedImg);
     imwrite("output/boundary-intraction.png", boundInt);
 
-    //Opening
-    for(int i = 0; i <size; i++) //setting up the kernel
+    // Opening
+    for (int i = 0; i < size; i++) // setting up the kernel
         kernel[i] = mfe[i];
     Mat opening = dilatation(erosion(threshImg, kernel, size), kernel, size);
     imwrite("output/opening.png", opening);
 
-    //Closing
-    for(int i = 0; i <size; i++) //setting up the kernel
+    // Closing
+    for (int i = 0; i < size; i++) // setting up the kernel
         kernel[i] = mfe[i];
     Mat closing = erosion(dilatation(threshImg, kernel, size), kernel, size);
     imwrite("output/closing.png", closing);
