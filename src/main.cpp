@@ -19,14 +19,14 @@ int main(int argc, char **argv) {
         return -1;
     }
     // Arithmetic operations
-    // Mat addImg = add(image, image2);
-    // Mat subImg = sub(image, image2);
-    // Mat mulImg = mul(image, image2);
-    // Mat divImg = div(image, image2);
-    // imwrite("output/add.png", addImg);
-    // imwrite("output/sub.png", subImg);
-    // imwrite("output/mul.png", mulImg);
-    // imwrite("output/div.png", divImg);
+    Mat addImg = add(image, image2);
+    Mat subImg = sub(image, image2);
+    Mat mulImg = mul(image, image2);
+    Mat divImg = div(image, image2);
+    imwrite("output/add.png", addImg);
+    imwrite("output/sub.png", subImg);
+    imwrite("output/mul.png", mulImg);
+    imwrite("output/div.png", divImg);
     // // Basic operations
     Mat arithGrayImg = arithmetic_grayscale(image);
     Mat weightedGrayImg = weighted_grayscale(image);
