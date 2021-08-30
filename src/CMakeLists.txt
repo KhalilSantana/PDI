@@ -5,3 +5,8 @@ message(STATUS "OpenCV version: ${OpenCV_VERSION}")
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 add_executable( PDI main.cpp image_arithmatic.cpp basic_operations.cpp image_operations.cpp)
 target_link_libraries( PDI ${OpenCV_LIBS})
+
+if(CMAKE_BUILD_TYPE STREQUAL Release)
+    set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+    message(STATUS "Using CXX FLAGS: ${CMAKE_CXX_FLAGS_RELEASE}")
+endif()
