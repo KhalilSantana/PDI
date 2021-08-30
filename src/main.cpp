@@ -19,15 +19,15 @@ int main(int argc, char **argv) {
         return -1;
     }
     // Arithmetic operations
-    // Mat addImg = add(image, image2);
-    // Mat subImg = sub(image, image2);
-    // Mat mulImg = mul(image, image2);
-    // Mat divImg = div(image, image2);
-    // imwrite("output/add.png", addImg);
-    // imwrite("output/sub.png", subImg);
-    // imwrite("output/mul.png", mulImg);
-    // imwrite("output/div.png", divImg);
-    // // Basic operations
+    Mat addImg = add(image, image2);
+    Mat subImg = sub(image, image2);
+    Mat mulImg = mul(image, image2);
+    Mat divImg = div(image, image2);
+    imwrite("output/add.png", addImg);
+    imwrite("output/sub.png", subImg);
+    imwrite("output/mul.png", mulImg);
+    imwrite("output/div.png", divImg);
+    // Basic operations
     Mat arithGrayImg = arithmetic_grayscale(image);
     Mat weightedGrayImg = weighted_grayscale(image);
     Mat threshImg = threshold(weightedGrayImg, 150);
@@ -88,8 +88,11 @@ int main(int argc, char **argv) {
     Mat dilatedImg = dilatation(threshImg, kernel, size);
     imwrite("output/Dilation.png", dilatedImg);
 
-    // Mat boundExt = sub(dilatedImg, threshImg);
-    // imwrite("output/boundary-extraction.png", boundExt);
+    Mat boundExt = subBin(dilatedImg, threshImg);
+    imwrite("output/boundary-extraction.png", boundExt);
+    Mat boundInt = subBin(threshImg, erodedImg);
+    imwrite("output/boundary-intraction.png", boundInt);
+    Mat opening = dilatation()
     // namedWindow("Display Image", WINDOW_AUTOSIZE);
     // imshow("Display Image", output);
     // waitKey(0);
