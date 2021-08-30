@@ -4,7 +4,7 @@ Authors: Eduardo Loback, Enzo Redivo, Khalil Santana
 
 ```bash
 $ mkdir build; cd build
-$ cmake ..
+$ cmake .. -DCMAKE_BUILD_TYPE=Release
 $ make
 $ ./PDI
 ```
